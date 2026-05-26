@@ -1,0 +1,21 @@
+{
+  "name": "@qie-safe-sign/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    "deploy:qie": "hardhat run scripts/deploy.ts --network qieTestnet"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.6"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/node": "^20",
+    "dotenv": "^17.4.2",
+    "hardhat": "^2.28.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  }
+}

@@ -1,18 +1,15 @@
 # QIE SafeSign MVP Architecture
 
-## Layers
+## Workspaces
 
-- **Web app (`src/app`)**: landing, scanner, demo dApp, approvals dashboard, developer mode.
-- **Risk engine (`src/lib/risk`)**: selector decoding, scoring rules, explanation output.
-- **Contracts (`contracts`)**: demo ERC-20, demo ERC-721, fake spender, optional registry.
-- **Deploy scripts (`scripts`)**: Hardhat deployment to QIE testnet.
-- **Extension (`extension`)**: basic MV3 companion popup/content/background scripts.
+- `frontend/`: Next.js app (landing, scanner, demo dApp, dashboard, developer mode, extension companion)
+- `contracts/`: Hardhat project (DemoToken, DemoNFT, FakeRewardSpender, SafeSignRegistry)
+- `backend/`: Express API scaffold (health + transaction explanation fallback endpoint)
 
-## Demo path
+## Demo Path
 
-1. Generate demo transaction in `/demo-dapp`.
-2. Open `/scanner` with transaction params.
-3. Decode calldata and evaluate risk rules.
-4. Display warnings and recommended actions.
-5. Review risky approvals in `/dashboard`.
-
+1. Generate a demo transaction in `frontend/src/app/demo-dapp`.
+2. Open `frontend/src/app/scanner` with prefilled transaction params.
+3. Decode calldata and evaluate risk rules in `frontend/src/lib/risk`.
+4. Show risk warnings and recommendations.
+5. Review risky approvals in `frontend/src/app/dashboard`.

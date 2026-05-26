@@ -1,59 +1,36 @@
-# QIE SafeSign MVP
+# QIE SafeSign Monorepo
 
-Know what you sign before you sign.
+QIE SafeSign is organized as a monorepo with separate apps for frontend, contracts, and backend.
 
-QIE SafeSign is a transaction safety layer for QIE that decodes wallet actions, detects risky approvals, explains transactions in plain English, and helps users avoid dangerous contract interactions before signing.
+## Structure
 
-## Stack
+- `frontend/` Next.js app (scanner, demo dApp, dashboard, extension)
+- `contracts/` Hardhat project (DemoToken, DemoNFT, FakeRewardSpender, SafeSignRegistry)
+- `backend/` Express API scaffold (AI/rule explanation endpoint)
+- `docs/` project documentation
 
-- Next.js + TypeScript + Tailwind CSS
-- wagmi + viem + RainbowKit
-- Rule-based risk engine
-- Solidity + Hardhat + OpenZeppelin
-- Chrome extension (Manifest V3) companion
-
-## Quick start
+## Quick Start
 
 ```bash
 npm install
-cp .env.example .env.local
-npm run dev
+npm run dev:frontend
 ```
 
-## Scripts
+## Useful Commands
 
 ```bash
-npm run dev
-npm run build
-npm run lint
+npm run dev:frontend
+npm run dev:backend
+npm run build:frontend
+npm run build:backend
 npm run contracts:compile
 npm run contracts:deploy:qie
 ```
 
-## Folder structure
+## Environment
 
-```txt
-src/
-  app/
-    page.tsx                # Landing
-    scanner/page.tsx        # Manual scan + report
-    demo-dapp/page.tsx      # Demo flow buttons
-    dashboard/page.tsx      # Approval dashboard
-    developer/page.tsx      # Dev mode entry
-  components/
-    layout/                 # Navbar
-    wallet/                 # Wallet providers/connect button
-    scanner/                # Scan form + report components
-    dashboard/              # Approval table component
-  config/
-    chains.ts               # QIE chain config
-    labels.ts               # Contract labels
-    demo-transactions.ts    # Demo calldata payloads
-  lib/
-    decode/                 # ABI fragments + selector map + decoder
-    risk/                   # Rules + scoring + explanation
-contracts/                  # DemoToken, DemoNFT, FakeRewardSpender, Registry
-scripts/                    # Hardhat deployment scripts
-extension/                  # Chrome extension skeleton
-docs/                       # Architecture notes
-```
+Copy `.env.example` and then split values as needed into each workspace:
+
+- `frontend/.env.local`
+- `contracts/.env`
+- `backend/.env`
