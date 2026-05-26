@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QIE SafeSign</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        width: 300px;
+        margin: 0;
+        padding: 16px;
+        background: #f4f8fb;
+        color: #0f172a;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+      p {
+        margin: 0 0 12px;
+        font-size: 13px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        border: 0;
+        border-radius: 8px;
+        background: #0f172a;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .risk {
+        margin: 12px 0;
+        padding: 10px;
+        border-radius: 8px;
+        background: #fee2e2;
+        color: #b91c1c;
+        font-size: 12px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>QIE SafeSign</h1>
+    <p>Check this page and open the full scanner report.</p>
+    <div id="risk" class="risk">Risky approval pattern detected.</div>
+    <button id="openScanner">Open SafeSign Scanner</button>
+    <script src="popup.js"></script>
+  </body>
+</html>
+

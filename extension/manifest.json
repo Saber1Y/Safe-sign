@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "QIE SafeSign Companion",
+  "description": "Quickly scan suspicious QIE transactions before signing.",
+  "version": "0.1.0",
+  "action": {
+    "default_title": "QIE SafeSign",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
+
