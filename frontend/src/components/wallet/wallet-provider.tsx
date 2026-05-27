@@ -1,35 +1,34 @@
 "use client";
 
+import { PrivyProvider } from "@privy-io/react-auth";
+import { WagmiProvider, createConfig } from "@privy-io/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  RainbowKitProvider,
-  getDefaultConfig,
-} from "@rainbow-me/rainbowkit";
 import { useState } from "react";
-import { WagmiProvider } from "wagmi";
+import { http } from "wagmi";
 import { qieTestnet } from "@/config/chains";
 
-const wagmiConfig = getDefaultConfig({
-  appName: "QIE SafeSign",
-  projectId:
-    process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "demo-project-id",
+const wagmiConfig = createConfig({
   chains: [qieTestnet],
-  ssr: true,
+  transports: {
+    [qieTestnet.id]: http(qieTestnet.rpcUrls.default.http[0]),
+  },
 });
 
 type WalletProviderProps = {
   children: React.ReactNode;
 };
 
+const privyAppId =
+  process.env.NEXT_PUBLIC_PRIVY_APP_ID ?? "cl00000000000000000000000";
+
 export function WalletProvider({ children }: WalletProviderProps) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <PrivyProvider appId={privyAppId}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
+        <WagmiProvider config={wagmiConfig}>{children}</WagmiProvider>
       </QueryClientProvider>
-    </WagmiProvider>
+    </PrivyProvider>
   );
 }
-
