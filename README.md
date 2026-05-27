@@ -5,7 +5,7 @@ QIE SafeSign is organized as a monorepo with separate apps for frontend, contrac
 ## Structure
 
 - `frontend/` Next.js app (scanner, demo dApp, dashboard, extension)
-- `contracts/` Hardhat project (DemoToken, DemoNFT, FakeRewardSpender, SafeSignRegistry)
+- `contracts/` Hardhat project (DemoToken, DemoNFT, DemoSafeSpender, FakeRewardSpender, SafeSignRegistry)
 - `backend/` Express API scaffold (AI/rule explanation endpoint)
 - `docs/` project documentation
 
@@ -26,6 +26,15 @@ npm run build:backend
 npm run contracts:compile
 npm run contracts:deploy:qie
 ```
+
+## Deployment Flow
+
+1. Set `contracts/.env`.
+2. Run `npm run contracts:deploy:qie`.
+3. Script writes:
+- `contracts/deployments/qieTestnet.json`
+- `frontend/src/config/generated/deployment.ts`
+4. Frontend will automatically use those addresses (or `NEXT_PUBLIC_*` overrides).
 
 ## Environment
 
