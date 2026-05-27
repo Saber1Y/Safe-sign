@@ -6,6 +6,11 @@
 - `contracts/`: Hardhat project (DemoToken, DemoNFT, DemoSafeSpender, FakeRewardSpender, SafeSignRegistry)
 - `backend/`: Express API scaffold (health + transaction explanation fallback endpoint)
 
+## Wallet Layer
+
+- `frontend` uses Privy (`@privy-io/react-auth`) for wallet connect UX.
+- `frontend` uses `@privy-io/wagmi` + wagmi hooks for contract reads/writes.
+
 ## Address Source
 
 - Deployment script exports canonical addresses to:
