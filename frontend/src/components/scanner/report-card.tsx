@@ -1,3 +1,4 @@
+import { formatUnits, maxUint256 } from "viem";
 import { getContractLabel } from "@/config/labels";
 import { explorerAddressUrl } from "@/lib/explorer";
 import type { ScanInput, ScanReport } from "@/lib/risk/types";
@@ -10,6 +11,37 @@ type ReportCardProps = {
 
 export function ReportCard({ report, input }: ReportCardProps) {
   const label = getContractLabel(input.to);
+  const [arg0, arg1] = report.action.args;
+
+  const details = (() => {
+    if (report.action.actionKind === "approve") {
+      const spender = String(arg0 ?? "");
+      const amount = typeof arg1 === "bigint" ? arg1 : BigInt(String(arg1 ?? 0));
+      return {
+        summary: `Spender ${spender} is approved for ${
+          amount >= maxUint256 - 10n ? "unlimited" : `${formatUnits(amount, 18)} tokens`
+        }.`,
+      };
+    }
+
+    if (report.action.actionKind === "setApprovalForAll") {
+      const operator = String(arg0 ?? "");
+      const approved = Boolean(arg1);
+      return {
+        summary: `${approved ? "Grants" : "Revokes"} operator access for all NFTs to ${operator}.`,
+      };
+    }
+
+    if (report.action.actionKind === "transfer") {
+      const to = String(arg0 ?? "");
+      const amount = typeof arg1 === "bigint" ? arg1 : BigInt(String(arg1 ?? 0));
+      return {
+        summary: `Transfers ${formatUnits(amount, 18)} tokens to ${to}.`,
+      };
+    }
+
+    return { summary: "No additional decoded argument summary available." };
+  })();
 
   return (
     <article className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -46,6 +78,9 @@ export function ReportCard({ report, input }: ReportCardProps) {
 
       <div className="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
         <p>
+          <strong>Decoded summary:</strong> {details.summary}
+        </p>
+        <p>
           <strong>Plain-English explanation:</strong> {report.explanation}
         </p>
         <p>
@@ -81,4 +116,3 @@ export function ReportCard({ report, input }: ReportCardProps) {
     </article>
   );
 }
-
