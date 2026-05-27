@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
+import { DEMO_CONTRACTS } from "@/config/contracts";
 import { ReportCard } from "@/components/scanner/report-card";
 import { ScanForm } from "@/components/scanner/scan-form";
 import { useSafeSignScanner } from "@/hooks/use-safe-sign-scanner";
@@ -12,7 +13,7 @@ export function ScannerClient() {
 
   const defaultInput = useMemo(
     () => ({
-      to: params.get("to") ?? "0x1111111111111111111111111111111111111111",
+      to: params.get("to") ?? DEMO_CONTRACTS.demoToken,
       data: params.get("data") ?? "0x",
       pageIntent: params.get("intent") ?? "",
       valueWei: params.get("valueWei") ?? "0",
@@ -43,4 +44,3 @@ export function ScannerClient() {
     </section>
   );
 }
-
