@@ -43,3 +43,7 @@ Copy `.env.example` and then split values as needed into each workspace:
 - `frontend/.env.local`
 - `contracts/.env`
 - `backend/.env`
+
+Required for frontend wallet connect:
+
+- `NEXT_PUBLIC_PRIVY_APP_ID` (from your Privy dashboard)
