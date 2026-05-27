@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { DEMO_CONTRACTS } from "@/config/contracts";
 import { demoTransactions } from "@/config/demo-transactions";
+import { explorerAddressUrl } from "@/lib/explorer";
 
 export default function DemoDappPage() {
   return (
@@ -13,6 +15,32 @@ export default function DemoDappPage() {
           the scanner.
         </p>
       </header>
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700 shadow-sm">
+        <p className="font-semibold text-slate-900">Demo contracts</p>
+        <p>
+          Token:{" "}
+          <a
+            href={explorerAddressUrl(DEMO_CONTRACTS.demoToken)}
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono text-xs text-sky-700 underline underline-offset-2"
+          >
+            {DEMO_CONTRACTS.demoToken}
+          </a>
+        </p>
+        <p>
+          NFT:{" "}
+          <a
+            href={explorerAddressUrl(DEMO_CONTRACTS.demoNft)}
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono text-xs text-sky-700 underline underline-offset-2"
+          >
+            {DEMO_CONTRACTS.demoNft}
+          </a>
+        </p>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {demoTransactions.map((transaction) => (
@@ -36,4 +64,3 @@ export default function DemoDappPage() {
     </section>
   );
 }
-
