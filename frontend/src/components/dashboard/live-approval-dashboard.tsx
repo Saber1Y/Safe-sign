@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { formatUnits, maxUint256, zeroAddress } from "viem";
 import {
   useAccount,
@@ -65,7 +65,7 @@ export function LiveApprovalDashboard() {
       query: { enabled: Boolean(hash) },
     });
 
-  async function revokeSafeSpender() {
+  const revokeSafeSpender = useCallback(async () => {
     setActiveRevoke("safeSpender");
     try {
       await writeContractAsync({
@@ -78,9 +78,9 @@ export function LiveApprovalDashboard() {
     } finally {
       setActiveRevoke(null);
     }
-  }
+  }, [refetchSafeAllowance, writeContractAsync]);
 
-  async function revokeRiskySpender() {
+  const revokeRiskySpender = useCallback(async () => {
     setActiveRevoke("riskySpender");
     try {
       await writeContractAsync({
@@ -93,9 +93,9 @@ export function LiveApprovalDashboard() {
     } finally {
       setActiveRevoke(null);
     }
-  }
+  }, [refetchRiskyAllowance, writeContractAsync]);
 
-  async function revokeNftOperator() {
+  const revokeNftOperator = useCallback(async () => {
     setActiveRevoke("nftOperator");
     try {
       await writeContractAsync({
@@ -108,7 +108,7 @@ export function LiveApprovalDashboard() {
     } finally {
       setActiveRevoke(null);
     }
-  }
+  }, [refetchNftApproval, writeContractAsync]);
 
   const tokenRows = useMemo<ApprovalRow[]>(
     () => [
@@ -143,7 +143,15 @@ export function LiveApprovalDashboard() {
             : "Revoke",
       },
     ],
-    [activeRevoke, isConnected, isWritePending, riskyAllowance, safeAllowance],
+    [
+      activeRevoke,
+      isConnected,
+      isWritePending,
+      revokeRiskySpender,
+      revokeSafeSpender,
+      riskyAllowance,
+      safeAllowance,
+    ],
   );
 
   const nftRows = useMemo<ApprovalRow[]>(
@@ -164,7 +172,13 @@ export function LiveApprovalDashboard() {
             : "Revoke",
       },
     ],
-    [activeRevoke, isConnected, isNftApprovalForAll, isWritePending],
+    [
+      activeRevoke,
+      isConnected,
+      isNftApprovalForAll,
+      isWritePending,
+      revokeNftOperator,
+    ],
   );
 
   return (
@@ -217,4 +231,3 @@ export function LiveApprovalDashboard() {
     </section>
   );
 }
-
