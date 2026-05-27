@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DEMO_CONTRACTS } from "@/config/contracts";
 import type { ScanInput } from "@/lib/risk/types";
 
 type ScanFormProps = {
@@ -10,7 +11,7 @@ type ScanFormProps = {
 
 export function ScanForm({ onScan, defaultInput }: ScanFormProps) {
   const [to, setTo] = useState(
-    defaultInput?.to ?? "0x1111111111111111111111111111111111111111",
+    defaultInput?.to ?? DEMO_CONTRACTS.demoToken,
   );
   const [data, setData] = useState(defaultInput?.data ?? "0x");
   const [valueWei, setValueWei] = useState(defaultInput?.valueWei ?? "0");
@@ -77,4 +78,3 @@ export function ScanForm({ onScan, defaultInput }: ScanFormProps) {
     </form>
   );
 }
-
