@@ -1,8 +1,13 @@
 import { deployment } from "@/config/generated/deployment";
 
-function envAddress(key: string, fallback: string) {
+function asHexAddress(value: string): `0x${string}` {
+  if (value.startsWith("0x")) return value as `0x${string}`;
+  return `0x${value}` as `0x${string}`;
+}
+
+function envAddress(key: string, fallback: `0x${string}`) {
   const value = process.env[key];
-  return value && value.startsWith("0x") ? value : fallback;
+  return value ? asHexAddress(value) : fallback;
 }
 
 export const DEMO_CONTRACTS = {
@@ -22,8 +27,7 @@ export const DEMO_CONTRACTS = {
   registry: envAddress("NEXT_PUBLIC_REGISTRY_ADDRESS", deployment.contracts.registry),
 } as const;
 
-export const demoRecipient = envAddress(
+export const demoRecipient: `0x${string}` = envAddress(
   "NEXT_PUBLIC_DEMO_RECIPIENT_ADDRESS",
-  "0x6666666666666666666666666666666666666666",
+  "0x6666666666666666666666666666666666666666" as `0x${string}`,
 );
-
