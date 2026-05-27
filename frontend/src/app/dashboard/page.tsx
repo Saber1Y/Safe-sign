@@ -1,31 +1,4 @@
-import { ApprovalTable, type ApprovalRow } from "@/components/dashboard/approval-table";
-
-const tokenApprovals: ApprovalRow[] = [
-  {
-    asset: "Demo QUSDC",
-    spender: "0x3333333333333333333333333333333333333333",
-    approvalType: "ERC-20 Allowance",
-    amount: "100 QUSDC",
-    risk: "Low",
-  },
-  {
-    asset: "Demo QUSDC",
-    spender: "0x4444444444444444444444444444444444444444",
-    approvalType: "ERC-20 Allowance",
-    amount: "Unlimited",
-    risk: "High",
-  },
-];
-
-const nftApprovals: ApprovalRow[] = [
-  {
-    asset: "DemoNFT",
-    spender: "0x4444444444444444444444444444444444444444",
-    approvalType: "setApprovalForAll",
-    amount: "All NFTs",
-    risk: "Critical",
-  },
-];
+import { LiveApprovalDashboard } from "@/components/dashboard/live-approval-dashboard";
 
 export default function DashboardPage() {
   return (
@@ -40,9 +13,7 @@ export default function DashboardPage() {
         </p>
       </header>
 
-      <ApprovalTable title="Token Approvals" rows={tokenApprovals} />
-      <ApprovalTable title="NFT Approvals" rows={nftApprovals} />
+      <LiveApprovalDashboard />
     </section>
   );
 }
-
