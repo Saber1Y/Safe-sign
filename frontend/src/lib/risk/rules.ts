@@ -51,6 +51,15 @@ export function evaluateSignals(
         message: "Approval target is unknown and not verified by SafeSign.",
       });
     }
+
+    if (spenderLabel.risk === "high") {
+      signals.push({
+        code: "known_risky_spender",
+        level: "Critical",
+        message:
+          "Approval target is marked risky. This spender has a dangerous profile.",
+      });
+    }
   }
 
   if (action.actionKind === "setApprovalForAll") {
@@ -91,4 +100,3 @@ export function evaluateSignals(
 
   return signals;
 }
-
