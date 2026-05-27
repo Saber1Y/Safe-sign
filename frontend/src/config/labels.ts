@@ -1,3 +1,5 @@
+import { DEMO_CONTRACTS } from "@/config/contracts";
+
 export type LabelRisk = "safe" | "caution" | "high" | "unknown";
 
 export type ContractLabel = {
@@ -9,22 +11,22 @@ export type ContractLabel = {
 const lower = (value: string) => value.toLowerCase();
 
 export const CONTRACT_LABELS: Record<string, ContractLabel> = {
-  [lower("0x1111111111111111111111111111111111111111")]: {
+  [lower(DEMO_CONTRACTS.demoToken)]: {
     name: "Official Demo Token",
     risk: "safe",
     verifiedBySafeSign: true,
   },
-  [lower("0x2222222222222222222222222222222222222222")]: {
+  [lower(DEMO_CONTRACTS.demoNft)]: {
     name: "Official Demo NFT",
     risk: "safe",
     verifiedBySafeSign: true,
   },
-  [lower("0x3333333333333333333333333333333333333333")]: {
+  [lower(DEMO_CONTRACTS.safeSpender)]: {
     name: "Known Demo Spender",
     risk: "caution",
     verifiedBySafeSign: true,
   },
-  [lower("0x4444444444444444444444444444444444444444")]: {
+  [lower(DEMO_CONTRACTS.fakeRewardSpender)]: {
     name: "Fake Claim Spender",
     risk: "high",
     verifiedBySafeSign: false,
@@ -48,4 +50,3 @@ export function getContractLabel(address?: string): ContractLabel {
     }
   );
 }
-
