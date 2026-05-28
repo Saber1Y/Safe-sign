@@ -1,8 +1,10 @@
+"use client";
+
 import { formatUnits, maxUint256 } from "viem";
-import { getContractLabel } from "@/config/labels";
 import { explorerAddressUrl } from "@/lib/explorer";
 import type { ScanInput, ScanReport } from "@/lib/risk/types";
 import { RiskBadge } from "./risk-badge";
+import { useContractLabel } from "@/hooks/use-registry-label";
 
 type ReportCardProps = {
   report: ScanReport;
@@ -10,7 +12,7 @@ type ReportCardProps = {
 };
 
 export function ReportCard({ report, input }: ReportCardProps) {
-  const label = getContractLabel(input.to);
+  const { label, source } = useContractLabel(input.to);
   const [arg0, arg1] = report.action.args;
 
   const details = (() => {
@@ -59,6 +61,11 @@ export function ReportCard({ report, input }: ReportCardProps) {
         </p>
         <p>
           <strong>Contract label:</strong> {label.name}
+          {source === "chain" ? (
+            <span className="ml-1.5 rounded bg-sky-100 px-1.5 py-0.5 text-xs text-sky-700">
+              on-chain
+            </span>
+          ) : null}
         </p>
         <p>
           <strong>Selector:</strong> {report.action.selector}

@@ -25,23 +25,33 @@ function WalletConnectionSync() {
   const { wallets, ready } = useWallets();
   const { address } = useAccount();
   const { setActiveWallet } = useSetActiveWallet();
-  const pendingAddressRef = useRef<string | null>(null);
+  const attemptRef = useRef<Record<string, number>>({});
 
   useEffect(() => {
     if (!ready || address || wallets.length === 0) return;
 
     const preferredWallet = wallets[0];
-    if (pendingAddressRef.current === preferredWallet.address) return;
+    const addr = preferredWallet.address;
+    const attempts = attemptRef.current[addr] ?? 0;
 
-    pendingAddressRef.current = preferredWallet.address;
-    void setActiveWallet(preferredWallet)
-      .catch(() => {
-        pendingAddressRef.current = null;
+    if (attempts >= 3) {
+      console.warn(
+        `[SafeSign] Failed to sync wallet ${addr} after 3 attempts. Giving up.`,
+      );
+      return;
+    }
+
+    attemptRef.current[addr] = attempts + 1;
+
+    setActiveWallet(preferredWallet)
+      .then(() => {
+        delete attemptRef.current[addr];
       })
-      .finally(() => {
-        if (pendingAddressRef.current === preferredWallet.address) {
-          pendingAddressRef.current = null;
-        }
+      .catch((err) => {
+        console.error(
+          `[SafeSign] setActiveWallet failed for ${addr} (attempt ${attempts + 1}/3):`,
+          err,
+        );
       });
   }, [address, ready, setActiveWallet, wallets]);
 
