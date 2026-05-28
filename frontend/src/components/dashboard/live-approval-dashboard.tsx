@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { usePrivy } from "@privy-io/react-auth";
 import { formatUnits, maxUint256, zeroAddress } from "viem";
 import {
   useAccount,
@@ -22,6 +23,8 @@ function formatAllowance(amount: bigint) {
 
 export function LiveApprovalDashboard() {
   const { address, isConnected } = useAccount();
+  const { ready, authenticated } = usePrivy();
+  const isWalletSyncing = ready && authenticated && !address;
   const owner = address ?? zeroAddress;
   const [activeRevoke, setActiveRevoke] = useState<RevokeTarget | null>(null);
 
@@ -183,7 +186,11 @@ export function LiveApprovalDashboard() {
 
   return (
     <section className="grid gap-6">
-      {!isConnected ? (
+      {isWalletSyncing ? (
+        <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-800">
+          Wallet connected. Syncing account details...
+        </div>
+      ) : !isConnected ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
           Connect your wallet to load live token and NFT approvals.
         </div>
