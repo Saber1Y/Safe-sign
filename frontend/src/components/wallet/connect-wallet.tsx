@@ -1,6 +1,6 @@
 "use client";
 
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useAccount } from "wagmi";
 
 function shortAddress(address: string) {
@@ -8,9 +8,14 @@ function shortAddress(address: string) {
 }
 
 export function ConnectWalletButton() {
-  const hasPrivyAppId = Boolean(process.env.NEXT_PUBLIC_PRIVY_APP_ID);
+  const hasPrivyAppId = Boolean(process.env.NEXT_PUBLIC_PRIVY_APP_ID?.trim());
   const { ready, authenticated, connectOrCreateWallet, logout } = usePrivy();
+  const { wallets } = useWallets();
   const { address } = useAccount();
+
+  const fallbackAddress = wallets[0]?.address;
+  const connectedAddress = address ?? fallbackAddress;
+  const isSyncingWallet = authenticated && !address;
 
   if (!hasPrivyAppId) {
     return (
@@ -36,7 +41,7 @@ export function ConnectWalletButton() {
     );
   }
 
-  if (!authenticated || !address) {
+  if (!authenticated) {
     return (
       <button
         type="button"
@@ -48,6 +53,18 @@ export function ConnectWalletButton() {
     );
   }
 
+  if (isSyncingWallet && !connectedAddress) {
+    return (
+      <button
+        type="button"
+        disabled
+        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-500"
+      >
+        Finalizing wallet...
+      </button>
+    );
+  }
+
   return (
     <div className="shrink-0">
       <button
@@ -55,7 +72,7 @@ export function ConnectWalletButton() {
         onClick={logout}
         className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
       >
-        {shortAddress(address)}
+        {connectedAddress ? shortAddress(connectedAddress) : "Wallet Connected"}
       </button>
     </div>
   );
