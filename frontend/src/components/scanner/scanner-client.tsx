@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { DEMO_CONTRACTS } from "@/config/contracts";
 import { ReportCard } from "@/components/scanner/report-card";
 import { ScanForm } from "@/components/scanner/scan-form";
+import { ScanHistory } from "@/components/scanner/scan-history";
 import { useSafeSignScanner } from "@/hooks/use-safe-sign-scanner";
+import type { HistoryEntry } from "@/lib/scan-history";
 
 export function ScannerClient() {
   const params = useSearchParams();
   const { report, input, scan } = useSafeSignScanner();
+  const formRef = useRef<{ resetWith: (input: Parameters<typeof scan>[0]) => void }>(null);
 
   const defaultInput = useMemo(
     () => ({
@@ -27,6 +30,13 @@ export function ScannerClient() {
     }
   }, [defaultInput, params, scan]);
 
+  const handleRestore = useCallback(
+    (entry: HistoryEntry) => {
+      scan(entry.input);
+    },
+    [scan],
+  );
+
   return (
     <section className="grid gap-6">
       <header>
@@ -41,6 +51,7 @@ export function ScannerClient() {
 
       <ScanForm onScan={scan} defaultInput={defaultInput} />
       {report && input ? <ReportCard report={report} input={input} /> : null}
+      <ScanHistory onRestore={handleRestore} />
     </section>
   );
 }

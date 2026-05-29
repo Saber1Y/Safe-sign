@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { scanTransaction } from "@/lib/risk/engine";
+import { addScanToHistory } from "@/lib/scan-history";
 import type { ScanInput, ScanReport } from "@/lib/risk/types";
 
 export function useSafeSignScanner() {
@@ -12,6 +13,7 @@ export function useSafeSignScanner() {
     const nextReport = scanTransaction(nextInput);
     setInput(nextInput);
     setReport(nextReport);
+    addScanToHistory(nextInput, nextReport);
     return nextReport;
   }, []);
 

@@ -16,11 +16,13 @@ const RISK_MAP: Record<number, LabelRisk> = {
   3: "high",
 };
 
-function parseRegistryResponse(
-  data?: readonly [string, number, boolean],
-): ContractLabel | null {
-  if (!data) return null;
-  const [name, riskLevel, verified] = data;
+function parseRegistryResponse(data: unknown): ContractLabel | null {
+  if (!data || typeof data !== "object") return null;
+  const entry = data as Record<string, unknown>;
+  const name = String(entry.name ?? entry[0] ?? "");
+  if (!name) return null;
+  const riskLevel = Number(entry.riskLevel ?? entry[1] ?? 0);
+  const verified = Boolean(entry.verifiedBySafeSign ?? entry[2] ?? false);
   return {
     name,
     risk: RISK_MAP[riskLevel] ?? "unknown",
