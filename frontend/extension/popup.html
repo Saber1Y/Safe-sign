@@ -19,10 +19,19 @@
         font-size: 13px;
         line-height: 1.5;
       }
-      h1 {
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+      .header img {
+        width: 28px;
+        height: 28px;
+      }
+      .header-text h1 {
         font-size: 16px;
         font-weight: 700;
-        margin-bottom: 4px;
       }
       .subtitle {
         color: #64748b;
@@ -110,7 +119,12 @@
     </style>
   </head>
   <body>
-    <h1>QIE SafeSign</h1>
+    <div class="header">
+      <img src="assets/icon.svg" alt="QIE SafeSign" />
+      <div class="header-text">
+        <h1>QIE SafeSign</h1>
+      </div>
+    </div>
     <p class="subtitle">Transaction safety layer for QIE</p>
 
     <div id="status" class="status-badge safe">Scanning...</div>

@@ -3,9 +3,15 @@
   "name": "QIE SafeSign Companion",
   "description": "Scan suspicious QIE transactions before signing. Detects phishing, unlimited approvals, and intent mismatches.",
   "version": "0.2.0",
+  "icons": {
+    "16": "assets/icon.svg",
+    "48": "assets/icon.svg",
+    "128": "assets/icon.svg"
+  },
   "action": {
     "default_title": "QIE SafeSign",
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": "assets/icon.svg"
   },
   "permissions": ["activeTab", "storage", "contextMenus"],
   "host_permissions": ["<all_urls>"],

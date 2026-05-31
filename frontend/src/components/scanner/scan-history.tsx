@@ -1,13 +1,8 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getScanHistory, clearScanHistory, type HistoryEntry } from "@/lib/scan-history";
 import { RiskBadge } from "./risk-badge";
-
-function subscribeToStorage(callback: () => void) {
-  window.addEventListener("storage", callback);
-  return () => window.removeEventListener("storage", callback);
-}
 
 function shortAddress(a: string) {
   return `${a.slice(0, 6)}...${a.slice(-4)}`;
@@ -26,7 +21,13 @@ type ScanHistoryProps = {
 };
 
 export function ScanHistory({ onRestore }: ScanHistoryProps) {
-  const history = useSyncExternalStore(subscribeToStorage, getScanHistory, () => []);
+  const [history, setHistory] = useState<HistoryEntry[]>(() => getScanHistory());
+
+  useEffect(() => {
+    const handle = () => setHistory(getScanHistory());
+    window.addEventListener("storage", handle);
+    return () => window.removeEventListener("storage", handle);
+  }, []);
 
   const handleClear = useCallback(() => {
     clearScanHistory();
