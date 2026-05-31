@@ -77,6 +77,7 @@ function render(detection: Detection | null): void {
   try {
     const detection = await chrome.runtime.sendMessage({
       type: "SAFE_SIGN_GET_STATE",
+      tabId: tab.id,
     });
     render(detection as Detection | null);
   } catch {

@@ -1,4 +1,4 @@
-import { SCANNER_URL, SUSPICIOUS_KEYWORDS } from "./config";
+import { SCANNER_URL } from "./config";
 
 interface Detection {
   hasSuspiciousText: boolean;
@@ -33,27 +33,33 @@ function updateBadge(tabId: number): void {
   }
 }
 
-chrome.runtime.onMessage.addListener((message, sender) => {
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    id: "scan-with-safesign",
+    title: "Scan with SafeSign",
+    contexts: ["selection", "page"],
+  });
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === "SAFE_SIGN_DETECT" && sender.tab?.id) {
     const tabId = sender.tab.id;
     const state = getState(tabId);
     state.detection = message.payload as Detection;
     updateBadge(tabId);
+    return;
   }
-});
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message?.type === "SAFE_SIGN_GET_STATE" && sender.tab?.id) {
-    const state = getState(sender.tab.id);
-    sendResponse(state.detection);
+  if (message?.type === "SAFE_SIGN_GET_STATE") {
+    const tabId = sender.tab?.id ?? message.tabId;
+    if (tabId) {
+      const state = getState(tabId);
+      sendResponse(state.detection);
+    } else {
+      sendResponse(null);
+    }
+    return true;
   }
-  return true;
-});
-
-chrome.contextMenus.create({
-  id: "scan-with-safesign",
-  title: "Scan with SafeSign",
-  contexts: ["selection", "page"],
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {

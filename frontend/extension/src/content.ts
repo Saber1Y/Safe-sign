@@ -8,12 +8,13 @@ interface Detection {
   pageTitle: string;
 }
 
-function scanPage(): Detection {
-  const text = (document.body?.innerText ?? "").toLowerCase();
+function scanPage(): Detection | null {
+  if (!document.body) return null;
+  const text = (document.body.innerText ?? "").toLowerCase();
   const foundKeywords = SUSPICIOUS_KEYWORDS.filter((kw) => text.includes(kw));
   const hasSuspiciousText = foundKeywords.length > 0;
 
-  const allText = document.body?.innerText ?? "";
+  const allText = document.body.innerText ?? "";
   const hexCandidates = [...allText.matchAll(HEX_PATTERN)].map((m) => m[0]).slice(0, 10);
 
   return {
@@ -27,16 +28,16 @@ function scanPage(): Detection {
 
 function sendDetection(): void {
   const detection = scanPage();
+  if (!detection) return;
   try {
     chrome.runtime.sendMessage({ type: "SAFE_SIGN_DETECT", payload: detection });
   } catch {
-    /* extension context may not be ready yet */
+    /* extension context not ready */
   }
 }
 
-sendDetection();
-
-const observer = new MutationObserver(() => {
+if (document.body) {
   sendDetection();
-});
-observer.observe(document.body, { childList: true, subtree: true });
+  const observer = new MutationObserver(() => sendDetection());
+  observer.observe(document.body, { childList: true, subtree: true });
+}
