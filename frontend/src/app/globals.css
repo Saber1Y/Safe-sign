@@ -3,6 +3,27 @@
 :root {
   --background: #f4f8fb;
   --foreground: #0f172a;
+
+  --risk-low: #16a34a;
+  --risk-low-bg: #f0fdf4;
+  --risk-low-border: #bbf7d0;
+
+  --risk-medium: #ca8a04;
+  --risk-medium-bg: #fefce8;
+  --risk-medium-border: #fef08a;
+
+  --risk-high: #ea580c;
+  --risk-high-bg: #fff7ed;
+  --risk-high-border: #fed7aa;
+
+  --risk-critical: #dc2626;
+  --risk-critical-bg: #fef2f2;
+  --risk-critical-border: #fecaca;
+
+  --primary: #0f172a;
+  --primary-light: #1e293b;
+  --accent: #0284c7;
+  --accent-light: #e0f2fe;
 }
 
 @theme inline {
@@ -15,3 +36,8 @@ body {
   color: var(--foreground);
   font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
+
+@keyframes score-fill {
+  from { width: 0; }
+}
+
