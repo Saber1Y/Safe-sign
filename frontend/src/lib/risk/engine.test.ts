@@ -1,11 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { scanTransaction } from "./engine";
+import { DEMO_CONTRACTS } from "@/config/contracts";
 import type { ScanInput } from "./types";
 
 const TOKEN = "0x1111111111111111111111111111111111111111";
 const NFT = "0x2222222222222222222222222222222222222222";
 const UNKNOWN = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const RECIPIENT = "0x6666666666666666666666666666666666666666";
+const FAKE_REWARD = DEMO_CONTRACTS.fakeRewardSpender;
 
 function padAddress(addr: string): string {
   return "000000000000000000000000" + addr.toLowerCase().slice(2);
@@ -105,7 +107,7 @@ describe("scanTransaction", () => {
 
   it("detects risky contract via label", () => {
     const input: ScanInput = {
-      to: "0x4444444444444444444444444444444444444444",
+      to: FAKE_REWARD,
       data: "0xa9059cbb00000000000000000000000066666666666666666666666666666666666666660000000000000000000000000000000000000000000000000000000000000001",
     };
     const report = scanTransaction(input);

@@ -1,8 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { evaluateSignals } from "./rules";
+import { DEMO_CONTRACTS } from "@/config/contracts";
 import type { DecodedAction, ScanInput } from "./types";
 
 const UNKNOWN = "0xaAaAaaAaaAaAaaAaAAAAAAAAAaAAaaAaaAaaAa";
+const FAKE_REWARD = DEMO_CONTRACTS.fakeRewardSpender;
 
 describe("evaluateSignals", () => {
   const action = (kind: string, args: readonly unknown[] = []): DecodedAction =>
@@ -63,7 +65,7 @@ describe("evaluateSignals", () => {
 
   it("flags known risky contract", () => {
     const signals = evaluateSignals(
-      { to: "0x4444444444444444444444444444444444444444", data: "0x" },
+      { to: FAKE_REWARD, data: "0x" },
       action("transfer", ["0x6666666666666666666666666666666666666666", 1n]),
     );
     expect(signals.some((s) => s.code === "known_risky_contract")).toBe(true);

@@ -5,7 +5,8 @@
   "scripts": {
     "compile": "hardhat compile",
     "clean": "hardhat clean",
-    "deploy:qie": "hardhat run scripts/deploy.ts --network qieTestnet"
+    "deploy:qie": "hardhat run scripts/deploy.ts --network qieTestnet",
+    "deploy:local": "hardhat run scripts/deploy.ts --network localnet"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.6"

@@ -15,6 +15,9 @@
     "build:backend": "npm run build --workspace backend",
     "lint": "npm run lint --workspace frontend",
     "contracts:compile": "npm run compile --workspace contracts",
-    "contracts:deploy:qie": "npm run deploy:qie --workspace contracts"
+    "contracts:deploy:qie": "npm run deploy:qie --workspace contracts",
+    "contracts:deploy:local": "npm run deploy:local --workspace contracts",
+    "contracts:node": "hardhat node",
+    "contracts:node:deploy": "hardhat node & sleep 3 && hardhat run scripts/deploy.ts --network localnet"
   }
 }

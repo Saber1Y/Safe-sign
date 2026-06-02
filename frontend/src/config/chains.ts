@@ -1,11 +1,11 @@
 import { type Chain } from "viem";
 
-const qieChainId = Number(process.env.NEXT_PUBLIC_QIE_CHAIN_ID ?? "35443");
+const qieChainId = Number(process.env.NEXT_PUBLIC_QIE_CHAIN_ID ?? "1983");
 const qieRpcUrl =
-  process.env.NEXT_PUBLIC_QIE_RPC_URL ?? "https://testnet-rpc.qie.example";
+  process.env.NEXT_PUBLIC_QIE_RPC_URL ?? "https://rpc5testnet.qie.digital";
 const qieExplorerUrl =
   process.env.NEXT_PUBLIC_QIE_EXPLORER_URL ??
-  "https://testnet-explorer.qie.example";
+  "https://testnet.qie.digital";
 
 export const qieTestnet = {
   id: qieChainId,
